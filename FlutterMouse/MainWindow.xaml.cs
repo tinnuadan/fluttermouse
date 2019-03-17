@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +44,7 @@ namespace FlutterMouse
     #endregion
 
     #region Members
-    private Dictionary<Speed, int> Speed2Time { get; set; }
+    private List<Tuple<Speed, int>> SpeedAndTime { get; set; }
     private HotKey hotKey { get; set; }
     private InputSimulator inputSimulator { get; set; }
     private Timer timer { get; set; }
@@ -71,11 +71,10 @@ namespace FlutterMouse
       uiTimer.Tick += uiTimerElapsed;
       run = -1;
 
-      Speed2Time = new Dictionary<Speed, int>();
-      Speed2Time.Add(Speed.Slow, 1000);
-      Speed2Time.Add(Speed.Medium, 500);
-      Speed2Time.Add(Speed.Fast, 250);
-
+      SpeedAndTime = new List<Tuple<Speed, int>>();
+      SpeedAndTime.Add(new Tuple<Speed, int>(Speed.Slow, 1000));
+      SpeedAndTime.Add(new Tuple<Speed, int>(Speed.Medium, 500));
+      SpeedAndTime.Add(new Tuple<Speed, int>(Speed.Fast, 250));
 
 
       lblActiveProps = new List<LabelProps>();
@@ -95,6 +94,10 @@ namespace FlutterMouse
         cbMode.Items.Add(action.Description);
       }
 
+      foreach(var speedAndTime in SpeedAndTime)
+      {
+        cbSpeed.Items.Add(speedAndTime.Item1.ToString());
+      }
 
       cbSpeed.SelectedIndex = 1;
       cbMode.SelectedIndex = 0;
@@ -110,17 +113,10 @@ namespace FlutterMouse
       return actions[index];
     }
 
-    private Speed getSpeed()
+    private Tuple<Speed, int> getSpeed()
     {
       int index = cbSpeed.SelectedIndex;
-      return (Speed)index;
-    }
-
-    private int speedToTime(Speed s)
-    {
-      int speed = 0;
-      Speed2Time.TryGetValue(s, out speed);
-      return speed;
+      return SpeedAndTime.ElementAt(index);
     }
 
     private void uiTimerElapsed(object sender, EventArgs e)
@@ -152,7 +148,6 @@ namespace FlutterMouse
     private void startAction()
     {
       cbMode.IsEnabled = false;
-      var freq = speedToTime(getSpeed());
       _currentAction = getSelectedAction();
 
       if (_currentAction.Type == MouseAction.ActionType.Constant)
@@ -161,7 +156,7 @@ namespace FlutterMouse
       }
       else
       {
-        timer.Interval = speedToTime(getSpeed());
+        timer.Interval = getSpeed().Item2;
         timer.Start();
       }
       uiTimer.Start();
