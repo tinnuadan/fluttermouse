@@ -5,8 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlutterMouse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="FlutterMouse" Height="450" Width="800">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="110*"/>
+      <ColumnDefinition Width="200*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="25" />
+      <RowDefinition Height="25" />
+      <RowDefinition Height="25" />
+      <RowDefinition Height="25" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Label Grid.Column="0" Grid.Row="0" x:Name="label" Content="Start / Stop:"/>
+
+    <Label Grid.Column="0" Grid.Row="1">Mode</Label>
+    <ComboBox Grid.Column="1" Grid.Row="1" x:Name="cbMode" SelectionChanged="cbMode_SelectionChanged">
+    </ComboBox>
+
+    <Label Grid.Column="0" Grid.Row="2">Speed</Label>
+    <ComboBox Grid.Column="1" Grid.Row="2" x:Name="cbSpeed">
+      <ComboBoxItem>Slow</ComboBoxItem>
+      <ComboBoxItem>Medium</ComboBoxItem>
+      <ComboBoxItem>Fast</ComboBoxItem>
+    </ComboBox>
+
+
+    <Label Grid.Column="0" Grid.Row="3"  x:Name="lblActive" Content="Inactive" HorizontalContentAlignment="Center"/>
+
+
+    <Label Grid.Column="1" Grid.Row="0"  Content="Alt + F9" />
+
+  </Grid>
 </Window>
