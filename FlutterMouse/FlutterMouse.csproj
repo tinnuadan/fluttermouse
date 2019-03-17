@@ -73,6 +73,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MouseAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
