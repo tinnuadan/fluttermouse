@@ -29,15 +29,15 @@ namespace FlutterMouse
       RepeateAction = repeatedAction;
     }
 
-    public bool enter()
+    public bool Enter()
     {
       return EnterAction();
     }
-    public bool leave()
+    public bool Leave()
     {
       return LeaveAction();
     }
-    public bool doaction()
+    public bool DoAction()
     {
       return RepeateAction();
     }

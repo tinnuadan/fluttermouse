@@ -65,10 +65,10 @@ namespace FlutterMouse
       inputSimulator = new InputSimulator();
       timer = new Timer();
       timer.AutoReset = true;
-      timer.Elapsed += timerElapsed;
+      timer.Elapsed += TimerElapsed;
       uiTimer = new DispatcherTimer();
       uiTimer.Interval = TimeSpan.FromMilliseconds(500);
-      uiTimer.Tick += uiTimerElapsed;
+      uiTimer.Tick += UiTimerElapsed;
       run = -1;
 
       SpeedAndTime = new List<Tuple<Speed, int>>();
@@ -113,23 +113,23 @@ namespace FlutterMouse
       return actions[index];
     }
 
-    private Tuple<Speed, int> getSpeed()
+    private Tuple<Speed, int> GetSpeed()
     {
       int index = cbSpeed.SelectedIndex;
       return SpeedAndTime.ElementAt(index);
     }
 
-    private void uiTimerElapsed(object sender, EventArgs e)
+    private void UiTimerElapsed(object sender, EventArgs e)
     {
-      formatActiveLabel(run % 2 + 1);
+      FormatActiveLabel(run % 2 + 1);
       run++;
     }
 
-    private void timerElapsed(object sender, ElapsedEventArgs e)
+    private void TimerElapsed(object sender, ElapsedEventArgs e)
     {
       if (_currentAction != null)
       {
-        _currentAction.doaction();
+        _currentAction.DoAction();
       }
     }
 
@@ -137,36 +137,36 @@ namespace FlutterMouse
     {
       if (run >= 0)
       {
-        stopAction();
+        StopAction();
       }
       else
       {
-        startAction();
+        StartAction();
       }
     }
 
-    private void startAction()
+    private void StartAction()
     {
       cbMode.IsEnabled = false;
       _currentAction = getSelectedAction();
 
       if (_currentAction.Type == MouseAction.ActionType.Constant)
       {
-        _currentAction.enter();
+        _currentAction.Enter();
       }
       else
       {
-        timer.Interval = getSpeed().Item2;
+        timer.Interval = GetSpeed().Item2;
         timer.Start();
       }
       uiTimer.Start();
       run = 0;
       lblActive.Content = "ACTIVE";
-      formatActiveLabel(2);
+      FormatActiveLabel(2);
     }
 
 
-    private void stopAction()
+    private void StopAction()
     {
       if (_currentAction == null)
       {
@@ -175,17 +175,17 @@ namespace FlutterMouse
       timer.Stop();
       if (_currentAction.Type == MouseAction.ActionType.Constant)
       {
-        _currentAction.leave();
+        _currentAction.Leave();
       }
       uiTimer.Stop();
       _currentAction = null;
       run = -1;
       lblActive.Content = "Inactive";
-      formatActiveLabel(0);
+      FormatActiveLabel(0);
       cbMode.IsEnabled = true;
     }
 
-    private void formatActiveLabel(int i)
+    private void FormatActiveLabel(int i)
     {
       lblActive.Foreground = lblActiveProps[i].FG;
       lblActive.Background = lblActiveProps[i].BG;
@@ -193,7 +193,7 @@ namespace FlutterMouse
 
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      stopAction();
+      StopAction();
     }
 
     private void cbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
